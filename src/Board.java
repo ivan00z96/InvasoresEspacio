@@ -14,6 +14,10 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.Rectangle;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.net.URL;
 
 /*
@@ -178,7 +182,129 @@ public class Board extends JPanel implements Runnable, Commons {
       Toolkit.getDefaultToolkit().sync();
       g.dispose();
     }
+    
+     /**
+     * guardarJuego
+     *
+     * Metodo que guarda todos los datos del juego
+     *
+     */
+    public void guardarJuego() {
 
+        //PrintWriter pwrOut = new PrintWriter(new FileWriter("Archivo.txt"));
+        try (PrintWriter pwrOut = new PrintWriter(new FileWriter("Archivo.txt"))) {
+            pwrOut.println(bPausa ? 1 : 0);
+            pwrOut.println(bInstruccion ? 1 : 0);
+            pwrOut.println(bAutores ? 1 : 0);
+            pwrOut.println(plaPlayer.getX());
+            pwrOut.println(plaPlayer.getY());
+            pwrOut.println(iDeaths);
+            Iterator it = arlAliens.iterator();
+            while (it.hasNext()) {
+                Alien alien = (Alien) it.next();
+                pwrOut.println(alien.getX());
+                pwrOut.println(alien.getY());
+                pwrOut.println(alien.isVisible() ? 1 : 0);
+//                int iAlienX = alien.getX();
+//                int iAlienY = alien.getY();
+                Alien.Bomb b = alien.getBomb();
+                pwrOut.println(b.getX());
+                pwrOut.println(b.getY());
+                pwrOut.println(b.isDestroyed() ? 1 : 0);
+            }
+            pwrOut.println(shShot.getX());
+            pwrOut.println(shShot.getY());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * cargarJuego
+     *
+     * Metodo que carga los datos de un juego anterior que se haya guardado
+     *
+     */
+    public void cargarJuego() {
+        int iaux;
+        URL urlImagenMalo = this.getClass().getResource("chimpy.gif");
+        URL urlImagenBueno = this.getClass().getResource("diddy.gif");
+        BufferedReader buffer;
+        try {
+//            // Abrimos el archivo
+//            FileInputStream fstream = new FileInputStream("Archivo.txt");
+//            // Creamos el objeto de entrada
+//            DataInputStream entrada = new DataInputStream(fstream);
+//            // Creamos el Buffer de Lectura
+//            BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));
+            buffer = new BufferedReader(new FileReader("Archivo.txt"));
+            String strLinea;
+            // Leer el archivo linea por linea
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            bPausa = (iaux == 1);
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            bInstruccion = (iaux == 1);
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            bPausa = (iaux == 1);
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            plaPlayer.setX(iaux);
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            plaPlayer.setY(iaux);
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            iDeaths = iaux;
+            arlAliens.clear();
+            ImageIcon ii = new ImageIcon(this.getClass().getResource(strAlienpix));
+            for (int iI = 0; iI < NUMBER_OF_ALIENS_TO_DESTROY; iI++) {
+                Alien alien = new Alien(18, 18);
+                alien.setImage(ii.getImage());
+                arlAliens.add(alien);
+            }
+            Iterator it = arlAliens.iterator();
+            while (it.hasNext()) {
+                Alien alien = (Alien) it.next();
+                strLinea = buffer.readLine();
+                iaux = Integer.parseInt(strLinea);
+                alien.setX(iaux);
+                strLinea = buffer.readLine();
+                iaux = Integer.parseInt(strLinea);
+                alien.setY(iaux);
+                strLinea = buffer.readLine();
+                iaux = Integer.parseInt(strLinea);
+                alien.setVisible(iaux == 1);
+                Alien.Bomb b = alien.getBomb();
+                strLinea = buffer.readLine();
+                iaux = Integer.parseInt(strLinea);
+                b.setX(iaux);
+                strLinea = buffer.readLine();
+                iaux = Integer.parseInt(strLinea);
+                b.setY(iaux);
+                strLinea = buffer.readLine();
+                iaux = Integer.parseInt(strLinea);
+                b.setDestroyed(iaux == 1);
+            }
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            shShot.setX(iaux);
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            shShot.setY(iaux);
+            strLinea = buffer.readLine();
+            iaux = Integer.parseInt(strLinea);
+            shShot.setVisible(iaux == 1);
+
+            // Cerramos el archivo
+            buffer.close();
+        } catch (Exception e) { //Catch de excepciones
+            System.err.println("Ocurrio un error: " + e.getMessage());
+        }
+    }
+    
     public void gameOver()
     {
 
@@ -379,6 +505,11 @@ public class Board extends JPanel implements Runnable, Commons {
           if (keyCode == KeyEvent.VK_R) {
               bAutores = !bAutores;
           }
+          else if (keyCode == KeyEvent.VK_G) {
+            guardarJuego();
+        } else if (keyCode == KeyEvent.VK_C) {
+            cargarJuego();
+        }
         }
 
         public void keyPressed(KeyEvent e) {
