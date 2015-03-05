@@ -1,4 +1,5 @@
 
+import java.awt.Image;
 import javax.swing.ImageIcon;
 
 /*
@@ -17,17 +18,40 @@ public class Alien extends Sprite {
     private final String shot = "alien.png";
 
     public Alien(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.iX = x;
+        this.iY = y;
 
         bomb = new Bomb(x, y);
         ImageIcon ii = new ImageIcon(this.getClass().getResource(shot));
         setImage(ii.getImage());
 
     }
+    /**
+     * Alien
+     * 
+     * Metodo constructor usado para crear el objeto animal
+     * creando el icono a partir de una imagen
+     * 
+     * @param iX es la <code>posicion en x</code> del objeto.
+     * @param iY es la <code>posicion en y</code> del objeto.
+     * @param iAncho es el <code>ancho</code> del objeto.
+     * @param iAlto es el <code>Largo</code> del objeto.
+     * @param imaImagen es la <code>imagen</code> del objeto.
+     * 
+//     */
+//    public Alien(int iX, int iY , int iAncho, int iAlto,Image imaImagen) {
+//        this.iX = iX;
+//        this.iY = iY;
+//        this.iAncho = iAncho;
+//        this.iAlto = iAlto;
+//        this.imaImagen = imaImagen;
+//        bomb = new Bomb(iX, iY);
+//        ImageIcon ii = new ImageIcon(this.getClass().getResource(shot));
+//        setImage(ii.getImage());
+//    }
 
     public void act(int direction) {
-        this.x += direction;
+        this.iX += direction;
     }
 
     public Bomb getBomb() {
@@ -39,10 +63,10 @@ public class Alien extends Sprite {
         private final String bomb = "bomb.png";
         private boolean destroyed;
 
-        public Bomb(int x, int y) {
+        public Bomb(int iX, int iY) {
             setDestroyed(true);
-            this.x = x;
-            this.y = y;
+            this.iX = iX;
+            this.iY = iY;
             ImageIcon ii = new ImageIcon(this.getClass().getResource(bomb));
             setImage(ii.getImage());
         }

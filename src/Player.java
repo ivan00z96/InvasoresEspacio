@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
  */
 public class Player extends Sprite implements Commons{
 
-    private final int START_Y = 280; 
+    private final int START_Y = 445; 
     private final int START_X = 270;
 
     private final String player = "player.png";
@@ -32,11 +32,11 @@ public class Player extends Sprite implements Commons{
     }
 
     public void act() {
-        x += dx;
-        if (x <= 2) 
-            x = 2;
-        if (x >= BOARD_WIDTH - 2*width) 
-            x = BOARD_WIDTH - 2*width;
+        iX += dx;
+        if (iX <= 2) 
+            iX = 2;
+        if (iX >= BOARD_WIDTH - 2*width) 
+            iX = BOARD_WIDTH - 2*width;
     }
 
     public void keyPressed(KeyEvent e) {

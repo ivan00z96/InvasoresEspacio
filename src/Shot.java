@@ -16,8 +16,10 @@ public class Shot extends Sprite {
     private String shot = "shot.png";
     private final int H_SPACE = 6;
     private final int V_SPACE = 1;
+    private ImageIcon imaIcon = new ImageIcon(this.getClass().getResource(shot));
 
     public Shot() {
+        setImage(imaIcon.getImage());
     }
 
     public Shot(int x, int y) {
