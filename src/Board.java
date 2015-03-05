@@ -32,14 +32,16 @@ import java.net.URL;
  */
 public class Board extends JPanel implements Runnable, Commons { 
 
-    private Dimension d;
-    private ArrayList arlAliens;
-    private Player plaPlayer;
-    private Shot shShot;
-    private boolean bPausa;
-    private boolean bInstruccion;
-    private boolean bAutores;
+    private Dimension d;                //Objeto Dimension
+    private ArrayList arlAliens;        //ArrayList Aliens
+    private Player plaPlayer;           //Objeto Player
+    private Shot shShot;                //Objeto Shot
+    private boolean bPausa;             //Booleana Pausa
+    private boolean bInstruccion;        //Booleana instruccion
+    private boolean bAutores;           //Booleana Autores
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
+    private SoundClip adcSonidoShot;   // Objeto sonido de Shot
+    private SoundClip adcSonidoExplosion;   // Objeto sonido de Explosion
 
     private int iAlienX = 150;
     private int iAlienY = 5;
@@ -89,6 +91,9 @@ public class Board extends JPanel implements Runnable, Commons {
 
         plaPlayer = new Player();
         shShot = new Shot();
+        adcSonidoShot = new SoundClip ("shot.wav");
+        adcSonidoExplosion = new SoundClip ("explosion.wav");
+        
 
         if (animator == null || !bIngame) {
             animator = new Thread(this);
@@ -361,6 +366,7 @@ public class Board extends JPanel implements Runnable, Commons {
                             alien.setDying(true);
                             iDeaths++;
                             shShot.die();
+                            adcSonidoExplosion.play();
                         }
                 }
             }
@@ -526,6 +532,7 @@ public class Board extends JPanel implements Runnable, Commons {
             if (e.isAltDown()) {
                 if (!shShot.isVisible())
                     shShot = new Shot(x, y);
+                    adcSonidoShot.play();
             }
           }
         }
