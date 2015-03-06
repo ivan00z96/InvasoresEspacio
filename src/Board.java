@@ -20,10 +20,15 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Board
+ *
+ * Modela la definición de todos los objetos de tipo
+ * <code>Board</code>
+ *
+ * @author Fred Roblero & Ivan Leal
+ * @version 1.0
+ * @date 3/6/2015
  */
 
 /**
@@ -43,44 +48,63 @@ public class Board extends JPanel implements Runnable, Commons {
     private SoundClip adcSonidoShot;   // Objeto sonido de Shot
     private SoundClip adcSonidoExplosion;   // Objeto sonido de Explosion
 
-    private int iAlienX = 150;
-    private int iAlienY = 5;
-    private int iDirection = -1;
-    private int iDeaths = 0;
+    private int iAlienX = 150; //Variable int Posicion en X
+    private int iAlienY = 5;    //Variable int Posicion en Y
+    private int iDirection = -1;//Variable int Direction
+    private int iDeaths = 0;    //Variable int Deaths
 
-    private boolean bIngame = true;
-    private final String strExpl = "explosion.png";
-    private final String strAlienpix = "alien.png";
-    private String strMessage = "Game Over";
+    private boolean bIngame = true; //Booleana por si sigue el juego
+    private final String strExpl = "explosion.png"; //Nombre de la imagen de Exp
+    private final String strAlienpix = "alien1.jpg";//Nombre de la imagen Alien
+    private String strMessage = "Game Over"; //Mensaje de Gameover
 
-    private Thread animator;
+    private Thread animator; //Thread Animator
 
     public Board() 
     {
 
-        addKeyListener(new TAdapter());
-        setFocusable(true);
-        d = new Dimension(BOARD_WIDTH, BOARD_HEIGTH);
-        setBackground(Color.black);
+        addKeyListener(new TAdapter()); //KeyListener con Adapter
+        setFocusable(true); //Si se puede enfoque
+        d = new Dimension(BOARD_WIDTH, BOARD_HEIGTH); //Dimension
+        setBackground(Color.black);//Background Negro
 
-        gameInit();
-        setDoubleBuffered(true);
+        gameInit();//Inicializador del metodo gameInit
+        setDoubleBuffered(true);//Double Buffered
     }
+    
+    /** 
+     * addNotify
+     * 
+     * Metodo de la clase <code>Board</code>.<P>
+     * En este metodo se inizializan las variables o se crean los objetos
+     * a usarse en el <code>Board</code> y se definen funcionalidades.
+     * 
+     */
 
-    public void addNotify() {
-        super.addNotify();
-        gameInit();
+    public void addNotify() { //addNotify 
+        super.addNotify(); //addNotify
+        gameInit(); //gameInit 
     }
+    
+     /** 
+     * gameInit
+     * 
+     * Metodo de la clase <code>Board</code>.<P>
+     * En este metodo se inizializan las variables o se crean los objetos
+     * a usarse en el <code>Board</code> y se definen funcionalidades.
+     * 
+     */
 
-    public void gameInit() {
+    public void gameInit() { //gameInit
 
-        bPausa = false;
-        bInstruccion = false;
+        bPausa = false; //booleana de Pausa en Falso
+        bInstruccion = false; //booleana de instruccion en Falso
         
-        arlAliens = new ArrayList();
+        arlAliens = new ArrayList();//Se asigna una instancia nueva al ArrayList
 
         ImageIcon ii = new ImageIcon(this.getClass().getResource(strAlienpix));
 
+        //Creacion de Aliens
         for (int i=0; i < 4; i++) {
             for (int j=0; j < 6; j++) {
                 Alien alien = new Alien(iAlienX + 18*j, iAlienY + 18*i);
@@ -89,7 +113,8 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
 
-        plaPlayer = new Player();
+        //Inicializacion de Variables
+        plaPlayer = new Player(); 
         shShot = new Shot();
         adcSonidoShot = new SoundClip ("shot.wav");
         adcSonidoExplosion = new SoundClip ("explosion.wav");
@@ -101,6 +126,15 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
+    /** 
+     * drawAliens
+     * 
+     * Metodo de la clase <code>Board</code>.<P>
+     * En este metodo se dibujan los aliens
+     * a usarse en el <code>Board</code> y se definen funcionalidades.
+     * 
+     */
+    
     public void drawAliens(Graphics g) 
     {
         Iterator it = arlAliens.iterator();
@@ -118,6 +152,15 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
+    /** 
+     * drawPlayer
+     * 
+     * Metodo de la clase <code>Board</code>.<P>
+     * En este metodo se dibuja un jugador
+     * a usarse en el <code>Board</code> y se definen funcionalidades.
+     * 
+     */
+    
     public void drawPlayer(Graphics g) {
 
         if (plaPlayer.isVisible()) {
@@ -130,11 +173,29 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
+    /** 
+     * drawShot
+     * 
+     * Metodo de la clase <code>Board</code>.<P>
+     * En este metodo se dibuja un shot
+     * a usarse en el <code>Board</code> y se definen funcionalidades.
+     * 
+     */
+    
     public void drawShot(Graphics g) {
         if (shShot.isVisible())
             g.drawImage(shShot.getImage(), shShot.getX(), shShot.getY(), this);
     }
 
+    /** 
+     * drawBombing
+     * 
+     * Metodo de la clase <code>Board</code>.<P>
+     * En este metodo se dibujan las bombas
+     * a usarse en el <code>Board</code> y se definen funcionalidades.
+     * 
+     */
+    
     public void drawBombing(Graphics g) {
 
         Iterator i3 = arlAliens.iterator();
@@ -150,6 +211,15 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
+    /** 
+     * paint
+     * 
+     * Metodo de la clase <code>Board</code>.<P>
+     * En este metodo se pintan los objetos.
+     * <code>Board</code> y se definen funcionalidades.
+     * 
+     */
+    
     public void paint(Graphics g)
     {
       super.paint(g);
@@ -494,7 +564,7 @@ public class Board extends JPanel implements Runnable, Commons {
         }
         gameOver();
     }
-
+    
     private class TAdapter extends KeyAdapter {
 
         public void keyReleased(KeyEvent e) {
