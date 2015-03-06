@@ -1,14 +1,19 @@
+/**
+ * Sprite
+ *
+ * Modela la definición de todos los objetos de tipo
+ * <code>Sprite</code>
+ *
+ * @author XXXXXXX
+ * @version 99 
+ * @date 99/XXX/99
+ */
+
 
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 import javax.swing.ImageIcon;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -28,27 +33,6 @@ public class Sprite {
         public Sprite() {
             visible = true;
         }
-        
-//        /**
-//     * Sprite
-//     * 
-//     * Metodo constructor usado para crear el objeto animal
-//     * creando el icono a partir de una imagen
-//     * 
-//     * @param iX es la <code>posicion en x</code> del objeto.
-//     * @param iY es la <code>posicion en y</code> del objeto.
-//     * @param iAncho es el <code>ancho</code> del objeto.
-//     * @param iAlto es el <code>Largo</code> del objeto.
-//     * @param imaImagen es la <code>imagen</code> del objeto.
-//     * 
-//     */
-//    public Sprite(int iX, int iY , int iAncho, int iAlto,Image imaImagen) {
-//        this.iX = iX;
-//        this.iY = iY;
-//        this.iAncho = iAncho;
-//        this.iAlto = iAlto;
-//        this.imaImagen = imaImagen;
-//    }
 
         public void die() {
             visible = false;

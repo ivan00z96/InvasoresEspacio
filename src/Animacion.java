@@ -6,7 +6,7 @@
 
 /**
  *
- * @author Ivan
+ * @author Ivan & Fred
  */
 
 import java.awt.Image;
