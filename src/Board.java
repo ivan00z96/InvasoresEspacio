@@ -47,6 +47,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
     private SoundClip adcSonidoShot;   // Objeto sonido de Shot
     private SoundClip adcSonidoExplosion;   // Objeto sonido de Explosion
+    private long tiempoActual;	//Tiempo de control de la animaciÃ³n
 
     private int iAlienX = 150; //Variable int Posicion en X
     private int iAlienY = 5;    //Variable int Posicion en Y
@@ -244,6 +245,14 @@ public class Board extends JPanel implements Runnable, Commons {
                 g.drawImage(imaImagenFondo, 0, 0,
                         getWidth(), getHeight(), this);
           }
+          
+          if (bAutores) {
+              URL urlImagenFondo = this.getClass().getResource("fredyyo.jpg");
+                Image imaImagenFondo
+                        = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
+                g.drawImage(imaImagenFondo, 0, 0,
+                        getWidth(), getHeight(), this);
+          }
 
         if (!bPausa) {
           g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
@@ -289,6 +298,7 @@ public class Board extends JPanel implements Runnable, Commons {
             }
             pwrOut.println(shShot.getX());
             pwrOut.println(shShot.getY());
+            pwrOut.println(shShot.isVisible() ? 1 : 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -302,8 +312,6 @@ public class Board extends JPanel implements Runnable, Commons {
      */
     public void cargarJuego() {
         int iaux;
-        URL urlImagenMalo = this.getClass().getResource("chimpy.gif");
-        URL urlImagenBueno = this.getClass().getResource("diddy.gif");
         BufferedReader buffer;
         try {
 //            // Abrimos el archivo
@@ -323,7 +331,7 @@ public class Board extends JPanel implements Runnable, Commons {
             bInstruccion = (iaux == 1);
             strLinea = buffer.readLine();
             iaux = Integer.parseInt(strLinea);
-            bPausa = (iaux == 1);
+            bAutores = (iaux == 1);
             strLinea = buffer.readLine();
             iaux = Integer.parseInt(strLinea);
             plaPlayer.setX(iaux);
@@ -411,7 +419,13 @@ public class Board extends JPanel implements Runnable, Commons {
 
         // plaPlayer
 
-        plaPlayer.act();
+        //Determina el tiempo que ha transcurrido desde que el JFrame inicio su ejecuciÃ³n
+         long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
+            
+         //Guarda el tiempo actual
+       	 tiempoActual += tiempoTranscurrido;
+       	 
+        plaPlayer.act(tiempoTranscurrido);
 
         // shShot
         if (shShot.isVisible()) {
@@ -540,9 +554,13 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void run() {
 
+        //Tiempo actual del sistema
+        tiempoActual = System.currentTimeMillis();
         long beforeTime, timeDiff, sleep;
 
         beforeTime = System.currentTimeMillis();
+        
+	
 
         while (bIngame) {
             if (!bPausa && !bInstruccion && !bAutores) {
