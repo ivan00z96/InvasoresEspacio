@@ -40,19 +40,13 @@ public class Player extends Sprite implements Commons{
 
         width = ii.getImage().getWidth(null); 
 
-        setImage(imaNave3);
+        setImage(imaNave1);
         setX(START_X);
         setY(START_Y);
     }
 
     public void act(long tiempo) {
-//        //Determina el tiempo que ha transcurrido desde que el JFrame inicio su ejecuciÃ³n
-//         long tiempoTranscurrido = System.currentTimeMillis() - tiempo;
-//            
-//         //Guarda el tiempo actual
-//       	 tiempo += tiempoTranscurrido;
-//       	 
-//       	 //Actualiza la animaciÃ³n del elefante en base al tiempo transcurrido
+        
        	aniPlayer.actualiza(tiempo);
         iX += dx;
         if (iX <= 2) {

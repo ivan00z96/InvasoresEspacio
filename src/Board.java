@@ -30,12 +30,11 @@ import java.net.URL;
  * @version 1.0
  * @date 3/6/2015
  */
-
 /**
  *
  * @author http://zetcode.com/
  */
-public class Board extends JPanel implements Runnable, Commons { 
+public class Board extends JPanel implements Runnable, Commons {
 
     private Dimension d;                //Objeto Dimension
     private ArrayList arlAliens;        //ArrayList Aliens
@@ -61,8 +60,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
     private Thread animator; //Thread Animator
 
-    public Board() 
-    {
+    public Board() {
 
         addKeyListener(new TAdapter()); //KeyListener con Adapter
         setFocusable(true); //Si se puede enfoque
@@ -72,54 +70,51 @@ public class Board extends JPanel implements Runnable, Commons {
         gameInit();//Inicializador del metodo gameInit
         setDoubleBuffered(true);//Double Buffered
     }
-    
-    /** 
+
+    /**
      * addNotify
-     * 
+     *
      * Metodo de la clase <code>Board</code>.<P>
      * En este metodo se inizializan las variables o se crean los objetos
      * a usarse en el <code>Board</code> y se definen funcionalidades.
-     * 
+     *
      */
-
     public void addNotify() { //addNotify 
         super.addNotify(); //addNotify
         gameInit(); //gameInit 
     }
-    
-     /** 
-     * gameInit
-     * 
-     * Metodo de la clase <code>Board</code>.<P>
-     * En este metodo se inizializan las variables o se crean los objetos
-     * a usarse en el <code>Board</code> y se definen funcionalidades.
-     * 
-     */
 
+    /**
+     * gameInit
+     *
+     * Metodo de la clase <code>Board</code>.<P>
+     * En este metodo se inizializan las variables o se crean los objetos a
+     * usarse en el <code>Board</code> y se definen funcionalidades.
+     *
+     */
     public void gameInit() { //gameInit
 
         bPausa = false; //booleana de Pausa en Falso
         bInstruccion = false; //booleana de instruccion en Falso
-        
+
         arlAliens = new ArrayList();//Se asigna una instancia nueva al ArrayList
 
         ImageIcon ii = new ImageIcon(this.getClass().getResource(strAlienpix));
 
         //Creacion de Aliens
-        for (int i=0; i < 4; i++) {
-            for (int j=0; j < 6; j++) {
-                Alien alien = new Alien(iAlienX + 18*j, iAlienY + 18*i);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 6; j++) {
+                Alien alien = new Alien(iAlienX + 18 * j, iAlienY + 18 * i);
                 alien.setImage(ii.getImage());
                 arlAliens.add(alien);
             }
         }
 
         //Inicializacion de Variables
-        plaPlayer = new Player(); 
+        plaPlayer = new Player();
         shShot = new Shot();
-        adcSonidoShot = new SoundClip ("shot.wav");
-        adcSonidoExplosion = new SoundClip ("explosion.wav");
-        
+        adcSonidoShot = new SoundClip("shot.wav");
+        adcSonidoExplosion = new SoundClip("explosion.wav");
 
         if (animator == null || !bIngame) {
             animator = new Thread(this);
@@ -127,17 +122,15 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
-    /** 
+    /**
      * drawAliens
-     * 
+     *
      * Metodo de la clase <code>Board</code>.<P>
-     * En este metodo se dibujan los aliens
-     * a usarse en el <code>Board</code> y se definen funcionalidades.
-     * 
+     * En este metodo se dibujan los aliens a usarse en el <code>Board</code> y
+     * se definen funcionalidades.
+     *
      */
-    
-    public void drawAliens(Graphics g) 
-    {
+    public void drawAliens(Graphics g) {
         Iterator it = arlAliens.iterator();
 
         while (it.hasNext()) {
@@ -153,15 +146,14 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
-    /** 
+    /**
      * drawPlayer
-     * 
+     *
      * Metodo de la clase <code>Board</code>.<P>
-     * En este metodo se dibuja un jugador
-     * a usarse en el <code>Board</code> y se definen funcionalidades.
-     * 
+     * En este metodo se dibuja un jugador a usarse en el <code>Board</code> y
+     * se definen funcionalidades.
+     *
      */
-    
     public void drawPlayer(Graphics g) {
 
         if (plaPlayer.isVisible()) {
@@ -174,29 +166,28 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
-    /** 
+    /**
      * drawShot
-     * 
+     *
      * Metodo de la clase <code>Board</code>.<P>
-     * En este metodo se dibuja un shot
-     * a usarse en el <code>Board</code> y se definen funcionalidades.
-     * 
+     * En este metodo se dibuja un shot a usarse en el <code>Board</code> y se
+     * definen funcionalidades.
+     *
      */
-    
     public void drawShot(Graphics g) {
-        if (shShot.isVisible())
+        if (shShot.isVisible()) {
             g.drawImage(shShot.getImage(), shShot.getX(), shShot.getY(), this);
+        }
     }
 
-    /** 
+    /**
      * drawBombing
-     * 
+     *
      * Metodo de la clase <code>Board</code>.<P>
-     * En este metodo se dibujan las bombas
-     * a usarse en el <code>Board</code> y se definen funcionalidades.
-     * 
+     * En este metodo se dibujan las bombas a usarse en el <code>Board</code> y
+     * se definen funcionalidades.
+     *
      */
-    
     public void drawBombing(Graphics g) {
 
         Iterator i3 = arlAliens.iterator();
@@ -207,67 +198,65 @@ public class Board extends JPanel implements Runnable, Commons {
             Alien.Bomb b = a.getBomb();
 
             if (!b.isDestroyed()) {
-                g.drawImage(b.getImage(), b.getX(), b.getY(), this); 
+                g.drawImage(b.getImage(), b.getX(), b.getY(), this);
             }
         }
     }
 
-    /** 
+    /**
      * paint
-     * 
+     *
      * Metodo de la clase <code>Board</code>.<P>
-     * En este metodo se pintan los objetos.
-     * <code>Board</code> y se definen funcionalidades.
-     * 
+     * En este metodo se pintan los objetos. <code>Board</code> y se definen
+     * funcionalidades.
+     *
      */
-    
-    public void paint(Graphics g)
-    {
-      super.paint(g);
+    public void paint(Graphics g) {
+        super.paint(g);
 
-      g.setColor(Color.black);
-      g.fillRect(0, 0, d.width, d.height);
-      g.setColor(Color.green);   
+        g.setColor(Color.black);
+        g.fillRect(0, 0, d.width, d.height);
+        g.setColor(Color.green);
 
-      if (bIngame) {
-          if (bInstruccion) {
-              URL urlImagenFondo = this.getClass().getResource("inst.jpg");
+        if (bIngame) {
+            if (bInstruccion) {
+                URL urlImagenFondo = this.getClass().getResource("inst.jpg");
                 Image imaImagenFondo
                         = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
                 g.drawImage(imaImagenFondo, 0, 0,
                         getWidth(), getHeight(), this);
-          }
-          
-          if (bPausa) {
-              URL urlImagenFondo = this.getClass().getResource("pausa.jpg");
+            }
+
+            if (bPausa) {
+                URL urlImagenFondo = this.getClass().getResource("pausa.jpg");
                 Image imaImagenFondo
                         = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
                 g.drawImage(imaImagenFondo, 0, 0,
                         getWidth(), getHeight(), this);
-          }
-          
-          if (bAutores) {
-              URL urlImagenFondo = this.getClass().getResource("fredyyo.jpg");
+            }
+
+            if (bAutores) {
+                URL urlImagenFondo = this.getClass().getResource("fredyyo.jpg");
                 Image imaImagenFondo
                         = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
                 g.drawImage(imaImagenFondo, 0, 0,
                         getWidth(), getHeight(), this);
-          }
+            }
 
-        if (!bPausa) {
-          g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
-        drawAliens(g);
-        drawPlayer(g);
-        drawShot(g);
-        drawBombing(g);
-      }
-      }
+            if (!bPausa) {
+                g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
+                drawAliens(g);
+                drawPlayer(g);
+                drawShot(g);
+                drawBombing(g);
+            }
+        }
 
-      Toolkit.getDefaultToolkit().sync();
-      g.dispose();
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
     }
-    
-     /**
+
+    /**
      * guardarJuego
      *
      * Metodo que guarda todos los datos del juego
@@ -314,12 +303,8 @@ public class Board extends JPanel implements Runnable, Commons {
         int iaux;
         BufferedReader buffer;
         try {
-//            // Abrimos el archivo
-//            FileInputStream fstream = new FileInputStream("Archivo.txt");
-//            // Creamos el objeto de entrada
-//            DataInputStream entrada = new DataInputStream(fstream);
-//            // Creamos el Buffer de Lectura
-//            BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));
+            // Abrimos el archivo
+            // Creamos el Buffer de Lectura
             buffer = new BufferedReader(new FileReader("Archivo.txt"));
             String strLinea;
             // Leer el archivo linea por linea
@@ -387,9 +372,8 @@ public class Board extends JPanel implements Runnable, Commons {
             System.err.println("Ocurrio un error: " + e.getMessage());
         }
     }
-    
-    public void gameOver()
-    {
+
+    public void gameOver() {
 
         Graphics g = this.getGraphics();
 
@@ -397,20 +381,20 @@ public class Board extends JPanel implements Runnable, Commons {
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGTH);
 
         g.setColor(new Color(0, 32, 48));
-        g.fillRect(50, BOARD_WIDTH/2 - 30, BOARD_WIDTH-100, 50);
+        g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
         g.setColor(Color.white);
-        g.drawRect(50, BOARD_WIDTH/2 - 30, BOARD_WIDTH-100, 50);
+        g.drawRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(strMessage, (BOARD_WIDTH - metr.stringWidth(strMessage))/2, 
-            BOARD_WIDTH/2);
+        g.drawString(strMessage, (BOARD_WIDTH - metr.stringWidth(strMessage)) / 2,
+                BOARD_WIDTH / 2);
     }
 
-    public void animationCycle()  {
+    public void animationCycle() {
 
         if (iDeaths == NUMBER_OF_ALIENS_TO_DESTROY) {
             bIngame = false;
@@ -418,13 +402,12 @@ public class Board extends JPanel implements Runnable, Commons {
         }
 
         // plaPlayer
-
         //Determina el tiempo que ha transcurrido desde que el JFrame inicio su ejecuciÃ³n
-         long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
-            
-         //Guarda el tiempo actual
-       	 tiempoActual += tiempoTranscurrido;
-       	 
+        long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
+
+        //Guarda el tiempo actual
+        tiempoActual += tiempoTranscurrido;
+
         plaPlayer.act(tiempoTranscurrido);
 
         // shShot
@@ -443,53 +426,53 @@ public class Board extends JPanel implements Runnable, Commons {
 //                        shShotX <= (iAlienX + ALIEN_WIDTH) &&
 //                        shShotY >= (iAlienY) &&
 //                        shShotY <= (iAlienY+ALIEN_HEIGHT) ) 
-                        if (shShot.intersecta(alien)){
-                            ImageIcon ii = 
-                                new ImageIcon(getClass().getResource(strExpl));
-                            alien.setImage(ii.getImage());
-                            alien.setDying(true);
-                            iDeaths++;
-                            shShot.die();
-                            adcSonidoExplosion.play();
-                        }
+                    if (shShot.intersecta(alien)) {
+                        ImageIcon ii
+                                = new ImageIcon(getClass().getResource(strExpl));
+                        alien.setImage(ii.getImage());
+                        alien.setDying(true);
+                        iDeaths++;
+                        shShot.die();
+                        adcSonidoExplosion.play();
+                    }
                 }
             }
 
             int y = shShot.getY();
             y -= 4;
-            if (y < 0)
+            if (y < 0) {
                 shShot.die();
-            else shShot.setY(y);
+            } else {
+                shShot.setY(y);
+            }
         }
 
         // arlAliens
+        Iterator it1 = arlAliens.iterator();
 
-         Iterator it1 = arlAliens.iterator();
+        while (it1.hasNext()) {
+            Alien a1 = (Alien) it1.next();
+            int x = a1.getX();
 
-         while (it1.hasNext()) {
-             Alien a1 = (Alien) it1.next();
-             int x = a1.getX();
-
-             if (x  >= BOARD_WIDTH - BORDER_RIGHT && iDirection != -1) {
-                 iDirection = -1;
-                 Iterator i1 = arlAliens.iterator();
-                 while (i1.hasNext()) {
-                     Alien a2 = (Alien) i1.next();
-                     a2.setY(a2.getY() + GO_DOWN);
-                 }
-             }
+            if (x >= BOARD_WIDTH - BORDER_RIGHT && iDirection != -1) {
+                iDirection = -1;
+                Iterator i1 = arlAliens.iterator();
+                while (i1.hasNext()) {
+                    Alien a2 = (Alien) i1.next();
+                    a2.setY(a2.getY() + GO_DOWN);
+                }
+            }
 
             if (x <= BORDER_LEFT && iDirection != 1) {
                 iDirection = 1;
 
                 Iterator i2 = arlAliens.iterator();
                 while (i2.hasNext()) {
-                    Alien a = (Alien)i2.next();
+                    Alien a = (Alien) i2.next();
                     a.setY(a.getY() + GO_DOWN);
                 }
             }
         }
-
 
         Iterator it = arlAliens.iterator();
 
@@ -509,7 +492,6 @@ public class Board extends JPanel implements Runnable, Commons {
         }
 
         // bombs
-
         Iterator i3 = arlAliens.iterator();
         Random generator = new Random();
 
@@ -521,7 +503,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
                 b.setDestroyed(false);
                 b.setX(a.getX());
-                b.setY(a.getY());   
+                b.setY(a.getY());
             }
 
             int bombX = b.getX();
@@ -535,16 +517,16 @@ public class Board extends JPanel implements Runnable, Commons {
 //                    bombY >= (plaPlayerY) && 
 //                    bombY <= (plaPlayerY+PLAYER_HEIGHT) ) 
                 if (plaPlayer.intersecta(b)) {
-                        ImageIcon ii = 
-                            new ImageIcon(this.getClass().getResource(strExpl));
-                        plaPlayer.setImage(ii.getImage());
-                        plaPlayer.setDying(true);
-                        b.setDestroyed(true);;
-                    }
+                    ImageIcon ii
+                            = new ImageIcon(this.getClass().getResource(strExpl));
+                    plaPlayer.setImage(ii.getImage());
+                    plaPlayer.setDying(true);
+                    b.setDestroyed(true);;
+                }
             }
 
             if (!b.isDestroyed()) {
-                b.setY(b.getY() + 1);   
+                b.setY(b.getY() + 1);
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
                 }
@@ -559,20 +541,19 @@ public class Board extends JPanel implements Runnable, Commons {
         long beforeTime, timeDiff, sleep;
 
         beforeTime = System.currentTimeMillis();
-        
-	
 
         while (bIngame) {
             if (!bPausa && !bInstruccion && !bAutores) {
-            animationCycle();
+                animationCycle();
             }
             repaint();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
 
-            if (sleep < 0) 
+            if (sleep < 0) {
                 sleep = 2;
+            }
             try {
                 Thread.sleep(sleep);
             } catch (InterruptedException e) {
@@ -582,47 +563,44 @@ public class Board extends JPanel implements Runnable, Commons {
         }
         gameOver();
     }
-    
+
     private class TAdapter extends KeyAdapter {
 
         public void keyReleased(KeyEvent e) {
             plaPlayer.keyReleased(e);
             int keyCode = e.getKeyCode();
             if (keyCode == KeyEvent.VK_P) { //Pausa
-            
-            bPausa = !bPausa;
-        }
-          if (keyCode == KeyEvent.VK_I) { //Instrucciones
-            
-            bInstruccion = !bInstruccion;
-        }
-          if (keyCode == KeyEvent.VK_R) {
-              bAutores = !bAutores;
-          }
-          else if (keyCode == KeyEvent.VK_G) {
-            guardarJuego();
-        } else if (keyCode == KeyEvent.VK_C) {
-            cargarJuego();
-        }
+
+                bPausa = !bPausa;
+            }
+            if (keyCode == KeyEvent.VK_I) { //Instrucciones
+
+                bInstruccion = !bInstruccion;
+            }
+            if (keyCode == KeyEvent.VK_R) {
+                bAutores = !bAutores;
+            } else if (keyCode == KeyEvent.VK_G) {
+                guardarJuego();
+            } else if (keyCode == KeyEvent.VK_C) {
+                cargarJuego();
+            }
         }
 
         public void keyPressed(KeyEvent e) {
 
-          plaPlayer.keyPressed(e);
-          
+            plaPlayer.keyPressed(e);
 
-          int x = plaPlayer.getX();
-          int y = plaPlayer.getY();
-          
+            int x = plaPlayer.getX();
+            int y = plaPlayer.getY();
 
-          if (bIngame)
-          {
-            if (e.isAltDown()) {
-                if (!shShot.isVisible())
-                    shShot = new Shot(x, y);
+            if (bIngame) {
+                if (e.isAltDown()) {
+                    if (!shShot.isVisible()) {
+                        shShot = new Shot(x, y);
+                    }
                     adcSonidoShot.play();
+                }
             }
-          }
         }
     }
 }
